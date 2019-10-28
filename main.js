@@ -36,7 +36,7 @@ notes.push(["30","D2"   ,"Re2"      ,146.832    ,"h"]);
 notes.push(["31","D#2"  ,"Re#2"     ,155.563    ,"j"]);
 notes.push(["32","E2"   ,"Mi2"      ,164.814    ,"k"]);
 notes.push(["33","F2"   ,"Fa2"      ,174.614    ,"l"]);
-notes.push(["34","F#2"  ,"Fa#2"     ,184,997    ,"m"]);
+notes.push(["34","F#2"  ,"Fa#2"     ,184.997    ,"m"]);
 notes.push(["35","G2"   ,"Sol2"     ,195.998    ,"ù"]);
 notes.push(["36","G#2"  ,"Sol#2"    ,207.652    ,"*"]);
 notes.push(["37","A2"   ,"La2"      ,220        ,"<"]); 
@@ -134,10 +134,12 @@ document.addEventListener('keydown', (event) => {
             nomTouche.toUpperCase();
             isshift=false;
         }
+        nn=1
         for(n of notes){
             if(n[4]==nomTouche){
-                note(notes.indexOf(n));
+                note(nn);
             }
+            nn+=1;
         }
     }
 },false);
