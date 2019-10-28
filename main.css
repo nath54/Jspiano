@@ -20,15 +20,15 @@ button{
 }
 
 .blanc{
-    width:40px;
-    height:100px;
+    width:60px;
+    height:150px;
     background-color:rgb(255,255,255);
     color:rgb(0,0,0);
 }
 
 .noir{
-    width:35px;
-    height:80px;
+    width:58px;
+    height:140px;
     background-color:rgb(0,0,0);
     color:rgb(255,255,255);
 }
