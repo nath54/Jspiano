@@ -1,4 +1,12 @@
 
+// crée un contexteaudio
+var contexteAudio = new (window.AudioContext || window.webkitAudioContext)();
+
+var oscillator = contexteAudio.createOscillator();
+oscillator.type = 'triangle';
+
+var jouer=false;
+var start=false;
 
 var notes=[];
 //                   notes 
@@ -105,24 +113,29 @@ for(x=1;x<=88;x++){
     b.appendChild(p);
 }
 
-
-// crée un contexteaudio
-var contexteAudio = new (window.AudioContext || window.webkitAudioContext)();
-
-
-function suiteNote(oscillator){
-    oscillator.stop();
+function toggleOsc(){
+    if(jouer==false){
+        oscillator.connect(contexteAudio.destination);
+        jouer=true;
+        setTimeout(toggleOsc, 100);
+    }
+    else{
+        oscillator.disconnect(contexteAudio.destination);
+        jouer=false;
+    }
 }
 
 function note(num){
     di=num-1
     n=notes[di]
-    var oscillator = contexteAudio.createOscillator();
-    oscillator.connect(contexteAudio.destination);
-    oscillator.type = 'square';
-    oscillator.frequency.value = n[3]; // valeur en hertz
-    oscillator.start();
-    setTimeout(suiteNote, 50, args=(oscillator)); //Attendez 1 secondes avant de continuer dans la fonction suivante
+    if(start==false){
+        oscillator.start();
+        start=true;
+    }
+    if(n!=undefined){
+        oscillator.frequency.value = n[3]; // valeur en hertz
+        toggleOsc();
+    }
 }
 
 var isshift=false;
@@ -154,28 +167,34 @@ function readSheet(text){
 	var nts=text.split("\n");
 	var m=nts[0];
 	var nb=0;
+	var part="";
 	if(m=="0" || m==0){ //le numero de la touche
 	    for(n of nts){
-		    if(nb>0 && n!=""){
-			    setTimeout(note, 100, args=(parseInt(n)));
+	        var nn=n.trim();
+		    if(nb>0 && nn!="" && nn!="\n"){
+			    setTimeout(note, 1000, args=(parseInt(nn)));
+			    if(typeof(notes[nn-1])==typeof(notes[0])) part+=notes[nn-1][4]+" ";
 			}
-			if(n==""){
-				setTimeout(rien,100);
+			if(nn==""){
+				setTimeout(rien,1000);
 			}
 			nb+=1
 		}
 	}
 	if(m=="1" || m==1){ //le nom midi de la touche
 	    for(n of nts){
+	        var nn=n.trim();
 		    if(nb>0){
 			    for(t of notes){
-				    if(n==t[1]){
-			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
+			        tt=t[1];
+				    if(nn===tt){
+			            setTimeout(note, 1000, args=(notes.indexOf(t)+1));
+			            part+=t[4]+" "
 			        }
 			    }
 			}
 			if(n==""){
-				setTimeout(rien,100);
+				setTimeout(rien,1000);
 			}
 			nb+=1
 		}
@@ -185,12 +204,13 @@ function readSheet(text){
 		    if(nb>0){
 			    for(t of notes){
 				    if(t[2]==n){
-			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
+			            setTimeout(note, 1000, args=(notes.indexOf(t)+1));
+			            part+=t[4]+" "
 			        }
 			    }
 			}
 			if(n==""){
-				setTimeout(rien,100);
+				setTimeout(rien,1000);
 			}
 			nb+=1
 		}
@@ -200,16 +220,18 @@ function readSheet(text){
 		    if(nb>0){
 			    for(t of notes){
 				    if(t[4]==n){
-			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
+			            setTimeout(note, 1000, args=(notes.indexOf(t)+1));
+			            part+=t[4]+" "
 			        }
 			    }
 			}
 			if(n==""){
-				setTimeout(rien,100);
+				setTimeout(rien,1000);
 			}
 			nb+=1
 		}
 	}
+	document.getElementById("sheet").innerHTML=part;
 }
 
 function readFile() {
