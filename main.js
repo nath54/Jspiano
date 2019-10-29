@@ -96,9 +96,12 @@ for(x=1;x<=88;x++){
     var b=document.getElementById(""+x);
     var h=document.createElement("h4");
     h.innerHTML=notes[x-1][2];
+    var hh=document.createElement("h3");
+    hh.innerHTML=notes[x-1][1];
     var p=document.createElement("p");
     p.innerHTML=notes[x-1][4];
     b.appendChild(h);
+    b.appendChild(hh);
     b.appendChild(p);
 }
 
@@ -144,11 +147,14 @@ document.addEventListener('keydown', (event) => {
     }
 },false);
 
+function rien(){
+}
+
 function readSheet(text){
 	var nts=text.split("\n");
 	var m=nts[0];
 	var nb=0;
-	if(m=="0"){ //le numero de la touche
+	if(m=="0" || m==0){ //le numero de la touche
 	    for(n of nts){
 		    if(nb>0 && n!=""){
 			    setTimeout(note, 100, args=(parseInt(n)));
@@ -159,11 +165,11 @@ function readSheet(text){
 			nb+=1
 		}
 	}
-	if(m=="1"){ //le nom midi de la touche
+	if(m=="1" || m==1){ //le nom midi de la touche
 	    for(n of nts){
 		    if(nb>0){
 			    for(t of notes){
-				    if(t[1]==n){
+				    if(n==t[1]){
 			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
 			        }
 			    }
@@ -174,7 +180,7 @@ function readSheet(text){
 			nb+=1
 		}
 	}
-	if(m=="2"){ //le nom latin de la touche
+	if(m=="2" || m==2){ //le nom latin de la touche
 	    for(n of nts){
 		    if(nb>0){
 			    for(t of notes){
@@ -189,7 +195,7 @@ function readSheet(text){
 			nb+=1
 		}
 	}
-	if(m=="3"){ //le key event de la touche
+	if(m=="3" || m==3){ //le key event de la touche
 	    for(n of nts){
 		    if(nb>0){
 			    for(t of notes){
