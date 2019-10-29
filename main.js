@@ -144,8 +144,77 @@ document.addEventListener('keydown', (event) => {
     }
 },false);
 
+function readSheet(text){
+	var nts=text.split("\n");
+	var m=nts[0];
+	var nb=0;
+	if(m=="0"){ //le numero de la touche
+	    for(n of nts){
+		    if(nb>0 && n!=""){
+			    setTimeout(note, 100, args=(parseInt(n)));
+			}
+			if(n==""){
+				setTimeout(rien,100);
+			}
+			nb+=1
+		}
+	}
+	if(m=="1"){ //le nom midi de la touche
+	    for(n of nts){
+		    if(nb>0){
+			    for(t of notes){
+				    if(t[1]==n){
+			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
+			        }
+			    }
+			}
+			if(n==""){
+				setTimeout(rien,100);
+			}
+			nb+=1
+		}
+	}
+	if(m=="2"){ //le nom latin de la touche
+	    for(n of nts){
+		    if(nb>0){
+			    for(t of notes){
+				    if(t[2]==n){
+			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
+			        }
+			    }
+			}
+			if(n==""){
+				setTimeout(rien,100);
+			}
+			nb+=1
+		}
+	}
+	if(m=="3"){ //le key event de la touche
+	    for(n of nts){
+		    if(nb>0){
+			    for(t of notes){
+				    if(t[4]==n){
+			            setTimeout(note, 100, args=(notes.indexOf(t)+1));
+			        }
+			    }
+			}
+			if(n==""){
+				setTimeout(rien,100);
+			}
+			nb+=1
+		}
+	}
+}
 
-
-
+function readFile() {
+         var file = document.querySelector('input[type=file]').files[0];
+         var reader = new FileReader()
+         if (true) {
+            reader.onload = function (event) {
+                readSheet(event.target.result);
+            }
+         }
+         reader.readAsText(file);
+}
 
 
